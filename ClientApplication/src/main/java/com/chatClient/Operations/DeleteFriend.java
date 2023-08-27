@@ -17,7 +17,7 @@ public class DeleteFriend extends Operation{
     @Override
     void performOperation(User user) throws IOException, InterruptedException, URISyntaxException {
         request = HttpRequest.newBuilder()
-                .uri(new URI("localhost:5600/addFriend?userId=%s".formatted(user.getUserId())))
+                .uri(new URI("localhost:5600/deleteFriend?userId=%s".formatted(user.getUserId())))
                 .DELETE()
                 .build();
         HttpClient httpClient = HttpClient.newHttpClient();
