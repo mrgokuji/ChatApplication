@@ -18,6 +18,7 @@ public class ConnectedClient {
 
         try {
             this.inputStream = new DataInputStream(new BufferedInputStream(clientSocket.getInputStream())); //
+            System.out.println( "Getting data from Port" + clientSocket.getPort());
             currentUserName = inputStream.readUTF(); // reading UserName
             System.out.println("User " + currentUserName + " is connected");
 
@@ -38,20 +39,21 @@ public class ConnectedClient {
         outputStream.close();
     }
 
-    public void readMessages() {
-
+    public void transferMessages() {
         try {
 
-            ConnectedClient out = null;
-            while(out==null){
-                out = clientMap.getOrDefault(readChatsFrom,null);
+            ConnectedClient receiverClient = null;
+            while(receiverClient==null){
+                receiverClient = clientMap.getOrDefault(readChatsFrom,null);
                 Thread.sleep(1000);
             }
             while (!line.equals(Connection.STOP_STRING)) {
-                line = inputStream.readUTF();
+                line = inputStream.readUTF(); // READ messages from client
                 System.out.println(line);
-                writeMessage(out.outputStream);
+                writeMessage(receiverClient.outputStream); // Write messages to receiver client
             }
+            clientMap.remove(currentUserName);
+            close();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
