@@ -69,8 +69,4 @@ public class SendAndReceiveMessage {
         in.close();
     }
 
-    public static void main(String[] args) {
-        new SendAndReceiveMessage("mrgokuji","anshika");
-    }
-
 }

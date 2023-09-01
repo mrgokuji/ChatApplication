@@ -7,8 +7,11 @@ import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
 
 public abstract class Operation {
-    HttpRequest request = null;
     String operationType ;
+    User currentUser;
+    Operation(User user){
+        currentUser = user;
+    }
 
     public String getOperationType() {
         return operationType;
