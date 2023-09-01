@@ -3,7 +3,6 @@ package com.chatServer.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +29,7 @@ public class Connection {
         if(clientSocket.isConnected())
         new Thread(()->{
             ConnectedClient client = new ConnectedClient(clientSocket);
-            client.readMessages();
+            client.transferMessages();
         }).start();
 
     }

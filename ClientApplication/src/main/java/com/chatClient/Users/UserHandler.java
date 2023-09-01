@@ -1,41 +1,37 @@
 package com.chatClient.Users;
 
 import com.chatClient.Model.User;
+import com.chatClient.Utils.EndPoints;
+import com.chatClient.Utils.Utils;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
 
 public class UserHandler {
 
     String currentUserToken = "thisIsTokenForCurrentUser";
 
-    List<User> getAllActiveUsers() throws URISyntaxException, IOException, InterruptedException {
-        List<User> users = new ArrayList<>();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("localhost:5600/getAllUsers"))
-                .GET()
-                .build();
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println("Got All the users  " + response.statusCode());
-        return users;
+
+    public List<User> getAllActiveUsers() throws IOException, ParseException {
+        List<User> userList = new ArrayList<>();
+        String body = Utils.makeRequest(EndPoints.listUser,"GET","").get();
+        System.out.println(body);
+        JSONArray object = (JSONArray) new JSONParser().parse(body);
+        for(int i=0;i<object.size();i++){
+            JSONObject jsonObject = (JSONObject) object.get(i);
+            userList.add(new User(Integer.parseInt(jsonObject.get("userId").toString()),(String)jsonObject.get("userName")));
+        }
+        return userList;
     }
 
-    int registerUser(User user) throws URISyntaxException, IOException, InterruptedException{
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("localhost:5600/user"))
-                .POST(HttpRequest.BodyPublishers.ofString(user.toString()))
-                .build();
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> response = httpClient.send(request,HttpResponse.BodyHandlers.ofString());
-        System.out.println(response);
-        return response.statusCode();
+    public void registerUser(User user) throws IOException {
+        System.out.println(Utils.makeRequest(EndPoints.registerUser,"POST", user.toString()).get());
     }
 
 }

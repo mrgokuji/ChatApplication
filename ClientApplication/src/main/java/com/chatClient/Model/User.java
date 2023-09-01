@@ -1,6 +1,11 @@
 package com.chatClient.Model;
 
 public class User {
+    public User(Integer userId, String userName) {
+        this.userId = userId;
+        this.userName = userName;
+    }
+
     public Integer getUserId() {
         return userId;
     }
@@ -19,5 +24,12 @@ public class User {
 
     Integer userId;
     String userName;
+
+    @Override
+    public String toString(){
+        String s = "{\"userId\":%d , \"userName\" : \"%s\"}".formatted(this.userId,this.userName);
+        System.out.println(s);
+        return s;
+    }
 
 }

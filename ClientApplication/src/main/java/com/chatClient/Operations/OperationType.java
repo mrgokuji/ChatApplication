@@ -5,7 +5,8 @@ import java.util.HashMap;
 public enum OperationType {
     ADD_FRIEND("AddFriend"),
     DELETE_FRIEND("DeleteFriend"),
-    LIST_FRIEND("ListFriend");
+    LIST_FRIEND("ListFriend"),
+    START_MESSAGING("START_MESSAGING");
 
     private final String name;
     OperationType(String type){
